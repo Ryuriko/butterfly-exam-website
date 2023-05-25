@@ -4,9 +4,9 @@
 <section>
     <div class="row mx-0 py-5 justify-content-center align-items-center min-vh-100 bg-dark">
         <div class="col-11 text-bg-light rounded-5 p-5">
+            <h1 class="text-center uppercase">{{$judul}}</h1>
             <form action="/pelajar" method="POST">
                 @csrf
-
                 <h2 class="mb-3">Pilihan Ganda</h2>
                 @foreach ($soalPG as $soal)
                 <p class="fs-5">{{$loop->iteration . '. ' . $soal['soal'] }}</p>
@@ -50,6 +50,11 @@
                     <textarea class="form-control" id="essai{{$loop->iteration}}" rows="3" name="essai{{$loop->iteration}}"></textarea>
                 </div>
                 @endforeach
+
+                <input type="hidden" value="{{$_GET['kode']}}" name="kode">
+                <input type="hidden" value="{{$jmlPG}}" name="jmlPG">
+                <input type="hidden" value="{{$jmlEssai}}" name="jmlEssai">
+                
                 <div class="text-end pt-3">
                     <button type="submit" class="btn btn-dark">Selesai</button>
                 </div>

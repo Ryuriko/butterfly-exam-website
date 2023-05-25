@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Soal;
 
 class PendidikController extends Controller
 {
@@ -30,9 +31,11 @@ class PendidikController extends Controller
     {
         $soalPG = [];
         $soalEssai = [];
+        $kode = mt_rand(1, 100000);
 
         for($i = 1; $i <= $request->jmlPG; $i++ ) {
             $pg = "pg" . "$i";
+            $key = "key" . "$i";
             $A = "A" . "$i";
             $B = "B" . "$i";
             $C = "C" . "$i";
@@ -40,6 +43,7 @@ class PendidikController extends Controller
 
             $soalPG[] = [
                 "soal" => $request->$pg,
+                "key" => $request->$key,
                 "A" => $request->$A,
                 "B" => $request->$B,
                 "C" => $request->$C,
@@ -56,11 +60,22 @@ class PendidikController extends Controller
 
         $data = [
             "judul" => $request->judul,
+            "kode" => $kode,
+            "jmlPG" => $request->jmlPG,
+            "jmlEssai" => $request->jmlEssai,
             "soalPG" => $soalPG,
-            "soalEssai" => $soalEssai
-        ];        
+            "soalEssai" => $soalEssai,
+        ];
+
+        $soal = [
+            "judul" => $request->judul,
+            "kode" => $kode,
+            "userId" => auth()->user()->id
+        ];
 
         Storage::disk('public')->put( auth()->user()->name .'/'. $request->judul .'.json', json_encode($data));
+
+        Soal::create($soal);
 
         return redirect('/');
     }

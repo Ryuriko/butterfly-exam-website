@@ -40,7 +40,7 @@ class Controller extends BaseController
         // ];
 
         User::create($validated);
-        // Storage::makeDirectory('public/' . $validated['name']);
+        Storage::makeDirectory('public/' . $validated['name']);
 
         $request->session()->flash('success', 'Registration successfully! Please Log in');
 
@@ -60,5 +60,15 @@ class Controller extends BaseController
         };
 
         return back()->with('loginError', 'Login Failed!');        
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+    
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
+    
+        return redirect('/');
     }
 }

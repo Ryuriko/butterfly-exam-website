@@ -16,10 +16,11 @@ use App\Http\Controllers\PelajarController;
 |
 */
 
-Route::get('/', [Controller::class, 'index']);
-Route::post('/', [Controller::class, 'authenticate']);
-Route::get('/registration', [Controller::class, 'registration']);
-Route::post('/registration', [Controller::class, 'store']);
+Route::get('/', [Controller::class, 'index'])->name('login')->middleware('guest');
+Route::post('/', [Controller::class, 'authenticate'])->middleware('guest');
+Route::get('/registration', [Controller::class, 'registration'])->middleware('guest');
+Route::post('/registration', [Controller::class, 'store'])->middleware('guest');
+Route::get('/logout', [Controller::class, 'logout'])->middleware('auth');
 
-Route::resource('/pendidik', PendidikController::class);
-Route::resource('/pelajar', PelajarController::class);
+Route::resource('/pendidik', PendidikController::class)->middleware('auth');
+Route::resource('/pelajar', PelajarController::class)->middleware('auth');

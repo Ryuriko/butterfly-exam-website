@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pelajar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Soal;
 
 class PelajarController extends Controller
 {
@@ -21,10 +22,17 @@ class PelajarController extends Controller
      */
     public function create()
     {
-        $soal = file_get_contents("storage/". auth()->user()->name ."/". $_GET['judul'] .".json");   
+
+        $kode = Soal::where('kode', $_GET['kode'])->get();
+
+        $soal = file_get_contents("storage/". auth()->user()->name ."/". $kode[0]['judul'] .".json");   
         $soal = json_decode($soal, true);
 
         return view('pelajar.soal', [
+            "judul" => $soal['judul'],
+            "kode" => $kode, 
+            "jmlPG" => $soal['jmlPG'],
+            "jmlEssai" => $soal['jmlEssai'],
             "soalPG" => $soal['soalPG'],
             "soalEssai" => $soal['soalEssai']
         ]);
@@ -35,7 +43,26 @@ class PelajarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $kode = Soal::where('kode', $_POST['kode'])->get();
+
+        $soal = file_get_contents("storage/". auth()->user()->name ."/". $kode[0]['judul'] .".json");   
+        $soal = json_decode($soal, true);
+
+        $soalPG = [];
+        $soalEssai = [];
+        
+        for($i = 1; $i <= $request->jmlPG; $i++ ) {
+
+            $soalPG[] = [
+                "soal" => $request->$pg,
+                "key" => $request->$key,
+                "A" => $request->$A,
+                "B" => $request->$B,
+                "C" => $request->$C,
+                "D" => $request->$D
+            ];
+        };
+        
     }
 
     /**
