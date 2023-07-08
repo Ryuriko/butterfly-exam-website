@@ -1,13 +1,13 @@
 @extends('partials.main')
 
 @section('content')
-  <div class="containers-fluid" id="particles-js">
-    <div class="row m-0 justify-content-around align-items-center" style="height: 100vh">
+  <div class="containers-fluid">
+    <div class="row m-0 justify-content-around align-items-center min-vh-100">
         <div class="col-auto mt-auto mt-md-0 text-center">
           <img  class="img-fluid mx-auto rounded-5" src="{{asset('media/landingpage/logo.png')}}" alt="Logo Butterfly">
           </div>
-          <div class="col-auto mb-auto mb-md-0 text-center">
-            <div class="card rounded-5 p-5 m-5">
+          <div class="col-12 col-sm-auto pb-auto pb-md-0 text-center">
+            <div class="card rounded-5 p-3 p-md-5 m-md-5 m-3 mt-0 shadow-lg">
 
               <img  class="img-fluid mx-auto rounded-5 mb-4" src="{{asset('media/landingpage/logo.png')}}" alt="Logo Butterfly">
 
@@ -25,6 +25,7 @@
                 </div>
               @endif
 
+            @guest
               <form action="/" method="POST">
                 @csrf
                 <div class="mb-3">
@@ -48,13 +49,13 @@
                 <a href="/registration" class="nav-link text-primary mb-2">Don't have an account? Click here</a>
                 <button type="submit" class="btn btn-primary">Log in</button>
               </form>
+              @else
+                <h2 class="text">Selamat datang kembali, </h2>
+                <h2 class="text mb-4">{{auth()->user()->name}}!</h2>
+                <a href="/{{auth()->user()->auth}}" class="btn btn-warning text-light fw-bold" style="z-index: 100">Beranda</a>
+              @endguest
             </div>
         </div>
     </div>
   </div>
-@endsection
-
-@section('js')
-  <script src="{{ asset('vendor/particles/particles.js') }}"></script>
-  <script src="{{ asset('vendor/particles/app.js') }}"></script>
 @endsection

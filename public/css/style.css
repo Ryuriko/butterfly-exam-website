@@ -5,7 +5,6 @@
 }
 #particles-js {
     /* background: linear-gradient(to bottom, #fff, #b61924); */
-    background: #18b691;
     height: 100%;
 }
 #particles-js canvas{
@@ -18,6 +17,12 @@
 form {
     z-index: 100;
 }
-nav {
+.front {
+    z-index: 100;
+}
+.no-backgrund {
     background: rgba(0, 0, 0, 0);
+}
+.backgroundIndex {
+    background: #18b691;
 }

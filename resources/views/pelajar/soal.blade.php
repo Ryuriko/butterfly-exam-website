@@ -2,12 +2,12 @@
 
 @section('content')
 <section>
-    <div class="row mx-0 py-5 justify-content-center align-items-center min-vh-100 bg-dark">
-        <div class="col-11 text-bg-light rounded-5 p-5">
-            <h1 class="text-center uppercase">{{$judul}}</h1>
-            <form action="/pelajar" method="POST">
+    <div class="row mx-0 py-5 justify-content-center align-items-center min-vh-100">
+        <div class="col-11 text-bg-light rounded-5 p-5 my-4 rounded-5" style="z-index: 100;">
+            <h1 class="text-center text-primary uppercase">{{$judul}}</h1>
+            <form action="/pelajar" method="POST" name="formSoal">
                 @csrf
-                <h2 class="mb-3">Pilihan Ganda</h2>
+                <h2 class="mb-3 text-primary">Pilihan Ganda</h2>
                 @foreach ($soalPG as $soal)
                 <p class="fs-5">{{$loop->iteration . '. ' . $soal['soal'] }}</p>
                 <div class="row m-0 mb-4">
@@ -42,12 +42,12 @@
                 @endforeach
 
                 <hr>
-                <h2 class="mb-3">Essai</h2>
+                <h2 class="mb-3 text-primary">Essai</h2>
 
                 @foreach ($soalEssai as $soal)
                 <div class="mb-3">
                     <label for="essai{{$loop->iteration}}" class="form-label fs-5">{{$loop->iteration . '. ' . $soal['soal']}}</label>
-                    <textarea class="form-control" id="essai{{$loop->iteration}}" rows="3" name="essai{{$loop->iteration}}"></textarea>
+                    <textarea class="form-control border border-dark" id="essai{{$loop->iteration}}" rows="3" name="essai{{$loop->iteration}}"></textarea>
                 </div>
                 @endforeach
 
@@ -56,7 +56,7 @@
                 <input type="hidden" value="{{$jmlEssai}}" name="jmlEssai">
                 
                 <div class="text-end pt-3">
-                    <button type="submit" class="btn btn-dark">Selesai</button>
+                    <button type="submit" class="btn btn-primary">Selesai</button>
                 </div>
             </form>
         </div>
@@ -66,8 +66,14 @@
 
 @section('js')
 <script>
-    // window.onblur = function() {
-    //     alert("Please don't open new tab");
-    // }
+    let i = 0;
+    window.onblur = function() {
+        i = i + 1;
+        alert("Anda telah membuka tab sebanyak : " + i + " kali, jika anda membuka 2 kali maka ulangan akan otomatis terkumpulkan!");
+        if(i >= 2) {
+            document.forms["formSoal"].submit();
+        };    
+    }
+    
 </script>
 @endsection

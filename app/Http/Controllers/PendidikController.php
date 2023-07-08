@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Soal;
+use Illuminate\Support\Collection;
 
 class PendidikController extends Controller
 {
@@ -12,6 +13,15 @@ class PendidikController extends Controller
      * Display a listing of the resource.
      */
     public function index()
+    {
+        $soal = Soal::where('userId', auth()->user()->id)->get();
+
+        return view('pendidik.index', [
+            "soal" => $soal,
+        ]);
+    }
+
+    public function init()
     {
         return view('pendidik.formInit');
     }
@@ -65,6 +75,12 @@ class PendidikController extends Controller
             "jmlEssai" => $request->jmlEssai,
             "soalPG" => $soalPG,
             "soalEssai" => $soalEssai,
+            
+        ];
+        $hasil[] = [
+            "nama" => "Nama",
+            "email" => "Email",
+            "hasil" => "Hasil"
         ];
 
         $soal = [
@@ -74,18 +90,30 @@ class PendidikController extends Controller
         ];
 
         Storage::disk('public')->put( auth()->user()->name .'/'. $request->judul .'.json', json_encode($data));
+        Storage::disk('public')->put( auth()->user()->name .'/hasil'. $request->judul .'.json', json_encode($hasil));
 
         Soal::create($soal);
 
-        return redirect('/');
+        return redirect('/pendidik/' . $data['judul']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(string $judul)
+    {   
+        $soal = file_get_contents("storage/". auth()->user()->name ."/". $judul .".json");   
+        $soal = json_decode($soal, true);
+
+        $hasil = file_get_contents("storage/". auth()->user()->name ."/hasil". $judul .".json");   
+        $hasil = json_decode($hasil, true);
+        $hasil = collect($hasil);
+        
+        return view('pendidik.show', [
+            "soal" => $hasil,
+            "judul" => $soal['judul'],
+            "kode" => $soal['kode']
+        ]);
     }
 
     /**

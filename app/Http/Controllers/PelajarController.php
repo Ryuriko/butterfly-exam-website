@@ -6,6 +6,7 @@ use App\Models\Pelajar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Soal;
+use App\Models\User;
 
 class PelajarController extends Controller
 {
@@ -23,19 +24,29 @@ class PelajarController extends Controller
     public function create()
     {
 
-        $kode = Soal::where('kode', $_GET['kode'])->get();
-
-        $soal = file_get_contents("storage/". auth()->user()->name ."/". $kode[0]['judul'] .".json");   
-        $soal = json_decode($soal, true);
-
-        return view('pelajar.soal', [
-            "judul" => $soal['judul'],
-            "kode" => $kode, 
-            "jmlPG" => $soal['jmlPG'],
-            "jmlEssai" => $soal['jmlEssai'],
-            "soalPG" => $soal['soalPG'],
-            "soalEssai" => $soal['soalEssai']
-        ]);
+        $kode = $_GET['kode'];
+        
+        $judul = Soal::where('kode', $kode)->get();
+        
+        if(isset($judul[0]))
+        {
+            $folder = User::where('id', $judul[0]['userId'])->get();
+            $folder = $folder[0]['name'];
+    
+            $soal = file_get_contents("storage/". $folder ."/". $judul[0]['judul'] .".json");   
+            $soal = json_decode($soal, true);
+    
+            return view('pelajar.soal', [
+                "judul" => $soal['judul'],
+                "kode" => $kode, 
+                "jmlPG" => $soal['jmlPG'],
+                "jmlEssai" => $soal['jmlEssai'],
+                "soalPG" => $soal['soalPG'],
+                "soalEssai" => $soal['soalEssai']
+            ]);
+        } else {
+            return redirect('/pelajar')->with('errorCode', 'Soal tidak ditemukan, periksa kembali kode soal anda!');
+        };
     }
 
     /**
@@ -45,24 +56,40 @@ class PelajarController extends Controller
     {
         $kode = Soal::where('kode', $_POST['kode'])->get();
 
-        $soal = file_get_contents("storage/". auth()->user()->name ."/". $kode[0]['judul'] .".json");   
+        $folder = User::where('id', $kode[0]['userId'])->get();
+        $folder = $folder[0]['name'];
+
+        $soal = file_get_contents("storage/". $folder ."/". $kode[0]['judul'] .".json");   
         $soal = json_decode($soal, true);
 
-        $soalPG = [];
-        $soalEssai = [];
+        $fileHasil = file_get_contents("storage/". $folder ."/hasil". $kode[0]['judul'] .".json");   
+        $data = json_decode($fileHasil, true);
+
+        $jawabanPG = [];
+        $benar = 0;
         
         for($i = 1; $i <= $request->jmlPG; $i++ ) {
+            $pg = "soal" . "$i";
 
-            $soalPG[] = [
-                "soal" => $request->$pg,
-                "key" => $request->$key,
-                "A" => $request->$A,
-                "B" => $request->$B,
-                "C" => $request->$C,
-                "D" => $request->$D
+            $jawabanPG[] = [
+                "jawaban" => $request->$pg,
             ];
         };
-        
+
+        for($i = 0; $i < $request->jmlPG; $i++ ) {
+            if($soal['soalPG'][$i]['key'] == $jawabanPG[$i]['jawaban']){
+                $benar = $benar + 1;
+            };
+        }
+
+        $data[] = [
+            "nama" => auth()->user()->name,
+            "email" => auth()->user()->email,
+            "hasil" => $benar
+        ];
+
+        Storage::disk('public')->put( $folder .'/hasil'. $kode[0]['judul'] .'.json', json_encode($data));
+        return redirect('/pelajar')->with('done', 'Jawaban berhasil dikirim!');
     }
 
     /**

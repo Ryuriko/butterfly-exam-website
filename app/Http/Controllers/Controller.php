@@ -28,21 +28,18 @@ class Controller extends BaseController
             'email' => 'required|email:dns|unique:users|max:255',
             'name' => 'required',
             'instansi' => 'required',
+            'auth' => 'required',
             'password' => 'required',
         ]);
         $validated['password'] = bcrypt($validated['password']);
 
-        // $user = [
-        //     'name' => $request->nama,
-        //     'email' => $request->email,
-        //     'instansi' => $request->instansi,
-        //     'password' => bcrypt($request->password)
-        // ];
-
         User::create($validated);
-        Storage::makeDirectory('public/' . $validated['name']);
 
         $request->session()->flash('success', 'Registration successfully! Please Log in');
+
+        if($validated['auth'] ===  "pendidik") {
+            Storage::makeDirectory('public/' . $validated['name']);
+        }
 
         return view('index')->with('success', 'registration');
     }
@@ -56,7 +53,11 @@ class Controller extends BaseController
 
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
-            return redirect()->intended('/pendidik');
+            if(auth()->user()->auth === "pendidik"){
+                return redirect()->intended('/pendidik');
+            } else if(auth()->user()->auth === "pelajar") {
+                return redirect()->intended('/pelajar');
+            };
         };
 
         return back()->with('loginError', 'Login Failed!');        
