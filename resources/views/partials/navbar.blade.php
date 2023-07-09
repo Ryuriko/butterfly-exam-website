@@ -16,7 +16,7 @@
                     </li>
                 @endif
                     <li class="nav-item">
-                        <a class="nav-link {{Request::is('profile') ? 'text-warning' : 'text-light'}} fw-bold fs-5" href="#"><i class="bi bi-person-circle"></i> Profile</a>
+                        <a class="nav-link {{Request::is('profile') ? 'text-warning' : 'text-light'}} fw-bold fs-5" href="/profile"><i class="bi bi-person-circle"></i> Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light fw-bold fs-5" href="/logout"><i class="bi bi-arrow-right-circle"></i> Log Out</a>

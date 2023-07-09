@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('pelajars', function (Blueprint $table) {
             $table->id();
+            $table->integer('nilai');
+            $table->integer('kode');
+            $table->integer('userId');
             $table->timestamps();
         });
     }

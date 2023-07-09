@@ -76,6 +76,14 @@ class PelajarController extends Controller
             ];
         };
 
+        for($i = 1; $i <= $request->jmlEssai; $i++ ) {
+            $essai = "essai" . "$i";
+
+            $jawabanEssai[] = [
+                "jawaban" => $request->$essai,
+            ];
+        };
+
         for($i = 0; $i < $request->jmlPG; $i++ ) {
             if($soal['soalPG'][$i]['key'] == $jawabanPG[$i]['jawaban']){
                 $benar = $benar + 1;
@@ -85,7 +93,9 @@ class PelajarController extends Controller
         $data[] = [
             "nama" => auth()->user()->name,
             "email" => auth()->user()->email,
-            "hasil" => $benar
+            "hasil" => $benar, 
+            "pg" => $jawabanPG, 
+            "essai" => $jawabanEssai
         ];
 
         Storage::disk('public')->put( $folder .'/hasil'. $kode[0]['judul'] .'.json', json_encode($data));

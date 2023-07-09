@@ -18,30 +18,55 @@ class Controller extends BaseController
     {
         return view('index');
     }
+
     public function registration()
     {
         return view('userRegistration.registration');
     }
+
     public function store(Request $request)
     {
+        // return $request;
         $validated = $request->validate([
             'email' => 'required|email:dns|unique:users|max:255',
             'name' => 'required',
+            'identity_code' => 'required',
             'instansi' => 'required',
             'auth' => 'required',
-            'password' => 'required',
+            'password' => 'required'
         ]);
         $validated['password'] = bcrypt($validated['password']);
 
-        User::create($validated);
-
-        $request->session()->flash('success', 'Registration successfully! Please Log in');
-
-        if($validated['auth'] ===  "pendidik") {
-            Storage::makeDirectory('public/' . $validated['name']);
+        if($request->picture) {
+            Storage::disk('public')->delete(auth()->user()->picture);
+            $validated['picture'] = $request->file('picture')->store('picture');
         }
 
-        return view('index')->with('success', 'registration');
+        User::create($validated);
+
+        return redirect('/')->with('success', 'Registrasi berhasil, silahkan log in');
+    }
+
+    public function update_profile(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required',
+            'identity_code' => 'required',
+            'instansi' => 'required',
+        ]);
+
+        if($request->picture) {
+            if(auth()->user()->picture) {
+                Storage::disk('public')->delete(auth()->user()->picture);
+            }
+            $validated['picture'] = $request->file('picture')->store('picture');
+        }
+
+        $request->session()->regenerate();
+
+        User::find($request->id)->update($validated);
+
+        return back()->with('success', 'Profile berhasil diperbarui');
     }
 
     public function authenticate(Request $request)
@@ -62,6 +87,7 @@ class Controller extends BaseController
 
         return back()->with('loginError', 'Login Failed!');        
     }
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -71,5 +97,14 @@ class Controller extends BaseController
         $request->session()->regenerateToken();
     
         return redirect('/');
+    }
+
+    public function profile()
+    {
+        $user = User::find(auth()->user()->id);
+        
+        return view('user.profile', [
+            'user' => $user
+        ]);
     }
 }

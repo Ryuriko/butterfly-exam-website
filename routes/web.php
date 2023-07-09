@@ -16,11 +16,17 @@ use App\Http\Controllers\PelajarController;
 |
 */
 
-Route::get('/', [Controller::class, 'index'])->name('login')->middleware('guest');
+Route::get('/', [Controller::class, 'index'])->name('login');
 Route::post('/', [Controller::class, 'authenticate'])->middleware('guest');
 Route::get('/registration', [Controller::class, 'registration'])->middleware('guest');
 Route::post('/registration', [Controller::class, 'store'])->middleware('guest');
 Route::get('/logout', [Controller::class, 'logout'])->middleware('auth');
 
-Route::resource('/pendidik', PendidikController::class)->middleware('auth');
-Route::resource('/pelajar', PelajarController::class)->middleware('auth');
+Route::get('/profile', [Controller::class, 'profile'])->middleware('auth');
+Route::put('/profile/{id}', [Controller::class, 'update_profile'])->middleware('auth');
+
+Route::get('/pendidik/init', [PendidikController::class, 'init'])->middleware('pendidik');
+Route::post('/pendidik/{email}/detail', [PendidikController::class, 'detail'])->middleware('pendidik');
+
+Route::resource('/pendidik', PendidikController::class)->middleware('pendidik');
+Route::resource('/pelajar', PelajarController::class)->middleware('pelajar');

@@ -2,6 +2,21 @@
 
 @section('content')
 <section>
+    @if (session()->has('success'))
+    <div class="row justify-content-center">
+        <div class="alert alert-success alert-dismissible fade show col-10" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    @endif
+
+    @if (session()->has('failed'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ session('loginError') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
     <div class="row m-0 min-vh-100 p-5 justify-content-evenly">
 
         @foreach ($soal as $data)            
