@@ -35,12 +35,13 @@ class PelajarController extends Controller
     
             $soal = file_get_contents("storage/". $folder ."/". $judul[0]['judul'] .".json");   
             $soal = json_decode($soal, true);
-    
+            
             return view('pelajar.soal', [
                 "judul" => $soal['judul'],
                 "kode" => $kode, 
                 "jmlPG" => $soal['jmlPG'],
                 "jmlEssai" => $soal['jmlEssai'],
+                "waktu" => $soal['time'],
                 "soalPG" => $soal['soalPG'],
                 "soalEssai" => $soal['soalEssai']
             ]);

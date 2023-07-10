@@ -74,6 +74,7 @@ class PendidikController extends Controller
             "kode" => $kode,
             "jmlPG" => $request->jmlPG,
             "jmlEssai" => $request->jmlEssai,
+            "time" => $request->time * 60000,
             "soalPG" => $soalPG,
             "soalEssai" => $soalEssai,
             

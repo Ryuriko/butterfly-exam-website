@@ -33,12 +33,12 @@ class Controller extends BaseController
             'identity_code' => 'required',
             'instansi' => 'required',
             'auth' => 'required',
+            'picture' => 'image|file|max:2048',
             'password' => 'required'
         ]);
         $validated['password'] = bcrypt($validated['password']);
 
         if($request->picture) {
-            Storage::disk('public')->delete(auth()->user()->picture);
             $validated['picture'] = $request->file('picture')->store('picture');
         }
 
@@ -52,6 +52,7 @@ class Controller extends BaseController
         $validated = $request->validate([
             'name' => 'required',
             'identity_code' => 'required',
+            'picture' => 'image|file|max:2048',
             'instansi' => 'required',
         ]);
 

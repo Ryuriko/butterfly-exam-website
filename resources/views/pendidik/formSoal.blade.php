@@ -60,6 +60,7 @@
                 <input type="hidden" value="{{$_GET['pg']}}" name="jmlPG">
                 <input type="hidden" value="{{$_GET['essai']}}" name="jmlEssai">
                 <input type="hidden" value="{{$_GET['judul']}}" name="judul">
+                <input type="hidden" value="{{$_GET['time']}}" name="time">
             </form>
         </div>
     </div>
