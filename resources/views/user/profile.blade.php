@@ -1,11 +1,53 @@
-{{-- @dd($user->picture) --}}
 @extends('partials.main')
 
 @section('content')
-  <div class="containers-fluid" id="particles-js">
-    <div class="row m-0 py-3 py-sm0 justify-content-around align-items-center min-vh-100">
-        <div class="col-12 col-sm-auto mb-auto mb-md-0 text-center">
-          @if (session()->has('success'))
+
+  <div class="row text-light">
+    <div class="col">
+        <h2 class="fw-bold">Profile</h2>
+    </div>
+  </div>
+
+  <div class="containers-fluid">
+    <div class="row m-0 py-3 py-sm0 justify-content-center align-items-center text-light">
+        <div class="col-12 col-sm-12 mb-auto mb-md-0 text-center">
+          <div class="">
+	<img class="img-fluid mt-3 w-25" src="{{auth()->user()->picture !== Null ? asset('/storage/' . auth()->user()->picture) : 'https://cdn.pixabay.com/photo/2015/08/19/21/25/butterfly-896668_1280.png'}}">
+            <span class="fs-5 fw-bold mt-3 d-block">{{auth()->user()->name}}</span>
+          </div>
+          <div class="row text-dark justify-content-evenly text-start mt-4 px-2 px-md-0" width="100%">
+            <div class="col-12 col-md-5 bg-light rounded-3 mb-2 mb-md-3 px-4 py-3">
+              <span class="d-block text-dark-blue fs-4 fw-bold">Identity Code</span>
+              <span class="d-block text-dark-blue">{{auth()->user()->identity_code}}</span>
+            </div>
+            <div class="col-12 col-md-5 bg-light rounded-3 mb-2 mb-md-3 px-4 py-3">
+              <span class="d-block text-dark-blue fs-4 fw-bold">Email</span>
+              <span class="d-block text-dark-blue">{{auth()->user()->email}}</span>
+            </div>
+            <div class="col-12 col-md-5 bg-light rounded-3 mb-2 mb-md-3 px-4 py-3">
+              <span class="d-block text-dark-blue fs-4 fw-bold">Instantion</span>
+              <span class="d-block text-dark-blue">{{auth()->user()->instansi}}</span>
+            </div>
+            <div class="col-12 col-md-5 bg-light rounded-3 mb-2 mb-md-3 px-4 py-3">
+              <span class="d-block text-dark-blue fs-4 fw-bold">As</span>
+              <span class="d-block text-dark-blue">{{auth()->user()->auth}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-auto text-center mt-3 mt-md-5">
+          <a class="bg-white-blue rounded-3 px-3 py-1 nav-link fw-bold" href="/profile/edit">Edit Profile</a>
+        </div>
+    </div>
+  </div>
+@endsection
+
+@section('js')
+  <script src="{{ asset('vendor/particles/particles.js') }}"></script>
+  <script src="{{ asset('vendor/particles/app.js') }}"></script>
+@endsection
+
+
+{{-- @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
               {{ session('success') }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -92,13 +134,4 @@
                     </div>
                 </div>
             </form>
-        </div>
-        </div>
-    </div>
-  </div>
-@endsection
-
-@section('js')
-  <script src="{{ asset('vendor/particles/particles.js') }}"></script>
-  <script src="{{ asset('vendor/particles/app.js') }}"></script>
-@endsection
+        </div> --}}

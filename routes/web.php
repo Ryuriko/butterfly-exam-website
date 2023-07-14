@@ -23,6 +23,7 @@ Route::post('/registration', [Controller::class, 'store'])->middleware('guest');
 Route::get('/logout', [Controller::class, 'logout'])->middleware('auth');
 
 Route::get('/profile', [Controller::class, 'profile'])->middleware('auth');
+Route::get('/profile/edit', [Controller::class, 'edit_profile'])->middleware('auth');
 Route::put('/profile/{id}', [Controller::class, 'update_profile'])->middleware('auth');
 
 Route::get('/pendidik/init', [PendidikController::class, 'init'])->middleware('pendidik');

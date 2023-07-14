@@ -1,15 +1,15 @@
-@extends('partials.main')
+@extends('partials.onboarding')
 
 @section('content')
   <div class="containers-fluid">
     <div class="row m-0 justify-content-around align-items-center min-vh-100">
         <div class="col-auto mt-auto mt-md-0 text-center">
-          <img  class="img-fluid mx-auto rounded-5" src="{{asset('media/landingpage/logo.png')}}" alt="Logo Butterfly">
+          <img  class="img-fluid mx-auto rounded-5 w-75" src="{{asset('media/landingpage/logo.png')}}" alt="Logo Butterfly">
           </div>
           <div class="col-12 col-sm-auto pb-auto pb-md-0 text-center">
             <div class="card rounded-5 p-3 p-md-5 m-md-5 m-3 mt-0 shadow-lg">
 
-              <img  class="img-fluid mx-auto rounded-5 mb-4" src="{{asset('media/landingpage/logo.png')}}" alt="Logo Butterfly">
+              <img  class="img-fluid mx-auto mb-4 w-50" src="{{asset('media/landingpage/login.png')}}" alt="Logo Butterfly">
 
               @if (session()->has('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -46,13 +46,13 @@
                     </div>
                   @enderror
                 </div>
-                <a href="/registration" class="nav-link text-primary mb-2">Don't have an account? Click here</a>
-                <button type="submit" class="btn btn-primary">Log in</button>
+                <button type="submit" class="btn bg-white-blue text-light btn-primary fw-bold mb-2">Log in</button>
+                <a href="/registration" class="nav-link text-primary">Don't have an account? Click here</a>
               </form>
               @else
-                <h2 class="text">Selamat datang kembali, </h2>
-                <h2 class="text mb-4">{{auth()->user()->name}}!</h2>
-                <a href="/{{auth()->user()->auth}}" class="btn btn-warning text-light fw-bold" style="z-index: 100">Beranda</a>
+                <h2 class="text">Welcome back, </h2>
+                <h2 class="text-white-blue mb-4">{{auth()->user()->name}}!</h2>
+                <a href="/{{auth()->user()->auth}}" class="btn bg-white-blue text-light btn-primary fw-bold" style="z-index: 100">Dashboard</a>
               @endguest
             </div>
         </div>

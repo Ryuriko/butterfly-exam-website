@@ -46,6 +46,24 @@ class Controller extends BaseController
 
         return redirect('/')->with('success', 'Registrasi berhasil, silahkan log in');
     }
+    
+    public function profile()
+    {
+        $user = User::find(auth()->user()->id);
+        
+        return view('user.profile', [
+            'user' => $user
+        ]);
+    }
+
+    public function edit_profile()
+    {
+        $user = User::find(auth()->user()->id);
+        
+        return view('user.edit', [
+            'user' => $user
+        ]);
+    }
 
     public function update_profile(Request $request)
     {
@@ -100,12 +118,4 @@ class Controller extends BaseController
         return redirect('/');
     }
 
-    public function profile()
-    {
-        $user = User::find(auth()->user()->id);
-        
-        return view('user.profile', [
-            'user' => $user
-        ]);
-    }
 }

@@ -3,6 +3,16 @@
 
 @section('content')
 <section>
+
+    <div class="row text-light">
+        <div class="col">
+            <h2 class="fw-bold">Detail</h2>
+        </div>
+        <div class="col-auto">
+            <a class="bg-white-blue rounded-3 px-3 py-1 nav-link fw-bold" href="/pendidik/{{$judul}}">Back</a>
+        </div>
+    </div>
+
     <div class="row mx-0 py-5 justify-content-center align-items-center min-vh-100">
         <div class="col-11 text-bg-light rounded-5 p-5 my-4 rounded-5" style="z-index: 100;">
             <hr>
@@ -68,9 +78,6 @@
                 </div>
                 @endfor
               </form>
-              <div class="text-center pt-3">
-                  <a href="/pendidik/{{$soal['judul']}}" class="btn btn-dark">Kembali</a>
-              </div>
         </div>
     </div>
 </section>

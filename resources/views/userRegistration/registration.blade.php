@@ -1,11 +1,11 @@
-@extends('partials.main')
+@extends('partials.onboarding')
 
 @section('content')
   <div class="containers-fluid" id="particles-js">
     <div class="row m-0 py-3 py-sm0 justify-content-around align-items-center min-vh-100">
         <div class="col-12 col-sm-auto mb-auto mb-md-0 text-center">
             <div class="card rounded-5 p-3 p-md-5 m-md-5 m-3 mt-0 shadow-lg">
-            <img  class="img-fluid mx-auto rounded-5 mb-4" src="{{asset('media/landingpage/logo.png')}}" alt="Logo Butterfly">
+            <img  class="img-fluid mx-auto mt-md-0 mt-3 mb-4 w-0" src="{{asset('media/landingpage/signup.png')}}">
             <form action="/registration" method="POST" style="z-index: 100;">
               @csrf
                 <div class="row m-0">
